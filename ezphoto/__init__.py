@@ -1,0 +1,1 @@
+"""A friendly, native desktop photo editor."""
