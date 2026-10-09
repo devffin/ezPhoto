@@ -110,8 +110,8 @@ class EditorWindow(QMainWindow):
     def __init__(self) -> None:
         super().__init__()
         self.settings = QSettings()
-        preference = self.settings.value("language", "auto")
-        self.language = automatic_language() if preference == "auto" else preference
+        self._language_preference = self.settings.value("language", "auto")
+        self.language = automatic_language() if self._language_preference == "auto" else self._language_preference
         self.image: Image.Image | None = None
         self.image_path: Path | None = None
         self.dirty = False
@@ -167,7 +167,7 @@ class EditorWindow(QMainWindow):
         self._language_picker.addItem(self.t("auto"), "auto")
         for code, name in LANGUAGES.items():
             self._language_picker.addItem(name, code)
-        self._language_picker.setCurrentIndex(max(0, self._language_picker.findData(preference)))
+        self._language_picker.setCurrentIndex(max(0, self._language_picker.findData(self._language_preference)))
         self._language_picker.currentIndexChanged.connect(self._change_language)
         heading.addWidget(self._language_picker)
         root.addLayout(heading)
@@ -435,6 +435,7 @@ class EditorWindow(QMainWindow):
             self._select_language(code)
 
     def _select_language(self, code: str) -> None:
+        self._language_preference = code
         self.settings.setValue("language", code)
         self.language = automatic_language() if code == "auto" else code
         if hasattr(self, "_language_picker"):
