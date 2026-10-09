@@ -130,6 +130,7 @@ class EditorWindow(QMainWindow):
         self._build_window()
         self._build_toolbar()
         self._build_menus()
+        self._update_translated_labels()
         self._update_state()
         self.resize(1280, 820)
         self.setMinimumSize(800, 590)
@@ -210,7 +211,6 @@ class EditorWindow(QMainWindow):
         self.statusBar().addPermanentWidget(self._zoom_slider)
         self.statusBar().setSizeGripEnabled(False)
         self.setCentralWidget(central)
-        self._update_translated_labels()
 
     def _apply_palette(self) -> None:
         palette = QPalette()
